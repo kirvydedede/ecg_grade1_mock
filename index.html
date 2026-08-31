@@ -1,22 +1,164 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1020" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="ECG 1級模試" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
-  <link rel="stylesheet" href="styles.css" />
-  <title>心電図検定1級 模擬試験</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0f172a" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<title>心電図検定1級 模擬試験</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#111827;--muted:#64748b;--line:#dbe3ee;--nav:#0f172a;--accent:#2563eb;--ok:#15803d;--bad:#b91c1c;--warn:#b45309}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+button,input{font:inherit}.app{max-width:920px;margin:auto;min-height:100vh}.top{position:sticky;top:0;z-index:10;background:var(--nav);color:#fff;padding:12px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between}.brand{font-weight:800;font-size:16px}.topright{display:flex;align-items:center;gap:10px}.timer{font-variant-numeric:tabular-nums;font-weight:800}.badge{font-size:12px;background:#1e293b;border:1px solid #334155;border-radius:999px;padding:5px 8px}
+main{padding:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 4px 14px rgba(15,23,42,.05);margin-bottom:14px}.hero h1{font-size:24px;margin:0 0 6px}.sub{color:var(--muted);line-height:1.6}.modegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.mode{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;text-align:left}.mode strong{display:block;font-size:16px}.mode span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.primary{background:var(--accent);color:#fff;border:0;border-radius:12px;padding:12px 15px;font-weight:800}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px 14px;font-weight:700}.danger{background:#fff;color:var(--bad);border:1px solid #fecaca;border-radius:12px;padding:11px 14px;font-weight:700}
+.hidden{display:none!important}.qhead{display:flex;justify-content:space-between;align-items:center;gap:12px}.qnum{font-weight:800}.cat{font-size:12px;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 8px}.stem{font-size:17px;line-height:1.65;margin:12px 0}.ecgbox{background:#fff;border:1px solid #d7dde7;border-radius:12px;overflow:auto;margin:10px 0 14px}.ecgsvg{min-width:760px;display:block;width:100%;height:auto}.ecg-note{font-size:12px;color:var(--muted);padding:8px 10px;border-top:1px solid var(--line);background:#fafafa}.choices{display:grid;gap:9px}.choice{width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px;display:flex;gap:10px;align-items:flex-start}.choice.selected{border-color:#2563eb;background:#eff6ff}.choice.correct{border-color:#16a34a;background:#f0fdf4}.choice.wrong{border-color:#dc2626;background:#fef2f2}.letter{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#e2e8f0;font-weight:800;flex:none}.actions{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:14px}.actions .right{display:flex;gap:8px}.flag.on{color:#b45309;border-color:#f59e0b;background:#fffbeb}.explain{margin-top:14px;padding:12px;border-radius:12px;background:#f8fafc;border:1px solid var(--line);line-height:1.65}.explain b{color:#0f172a}.pager{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:10px}.pg{border:1px solid var(--line);border-radius:8px;background:#fff;padding:7px 0;font-size:12px}.pg.answered{background:#e0f2fe}.pg.current{outline:2px solid #2563eb}.pg.flagged{box-shadow:inset 0 -3px #f59e0b}.resultbig{font-size:42px;font-weight:900}.resultgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{padding:12px;border-radius:12px;background:#f8fafc;border:1px solid var(--line)}.stat b{display:block;font-size:20px}.reviewitem{border-top:1px solid var(--line);padding:12px 0}.small{font-size:12px;color:var(--muted)}.footer{padding:18px 14px 30px;color:var(--muted);font-size:12px;line-height:1.5}.version{font-weight:700}
+@media(max-width:600px){main{padding:10px}.card{border-radius:13px;padding:13px}.modegrid{grid-template-columns:1fr}.hero h1{font-size:21px}.stem{font-size:16px}.resultgrid{grid-template-columns:1fr 1fr}.pager{grid-template-columns:repeat(5,1fr)}.brand{font-size:14px}}
+</style>
 </head>
 <body>
-  <main id="app"></main>
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
-  </script>
-</body>
-</html>
+<div class="app">
+<header class="top"><div class="brand">心電図検定1級 模擬試験</div><div class="topright"><span class="badge">波形版</span><span id="timer" class="timer hidden">90:00</span></div></header>
+<main>
+<section id="home">
+  <div class="card hero"><h1>波形判読トレーニング</h1><div class="sub">構造は従来版のまま、問題を波形中心にリニューアル。合成した学習用心電図を見て診断・病態・責任部位を選びます。</div></div>
+  <div class="modegrid">
+    <button class="mode" onclick="startExam('mock')"><strong>本番模試</strong><span>50問 / 90分 / 採点は最後</span></button>
+    <button class="mode" onclick="startExam('quick')"><strong>10問練習</strong><span>ランダム10問 / 解説を確認しながら</span></button>
+    <button class="mode" onclick="startExam('weak')"><strong>苦手復習</strong><span>過去に間違えた問題だけ</span></button>
+    <button class="mode" onclick="showStats()"><strong>成績・履歴</strong><span>最高点 / 最近の結果 / 苦手数</span></button>
+  </div>
+  <div class="card"><b>収録</b><div class="sub">虚血・梗塞、上室性/心室性不整脈、房室/脚ブロック、WPW、Brugada、電解質異常、肥大・負荷、ペースメーカなど。全50問。</div></div>
+</section>
+
+<section id="exam" class="hidden">
+  <div class="card">
+    <div class="qhead"><div><span id="qnum" class="qnum"></span> <span id="cat" class="cat"></span></div><div class="small" id="progress"></div></div>
+    <div id="stem" class="stem"></div>
+    <div class="ecgbox"><div id="ecg"></div><div class="ecg-note">学習用に合成した模式波形です。実際の臨床心電図とは細部が異なる場合があります。</div></div>
+    <div id="choices" class="choices"></div>
+    <div id="explain" class="explain hidden"></div>
+    <div class="actions"><button id="flagbtn" class="secondary flag" onclick="toggleFlag()">☆ フラグ</button><div class="right"><button class="secondary" onclick="prevQ()">戻る</button><button id="nextbtn" class="primary" onclick="nextQ()">次へ</button></div></div>
+    <div id="pager" class="pager"></div>
+  </div>
+</section>
+
+<section id="result" class="hidden"></section>
+<section id="stats" class="hidden"></section>
+</main>
+<div class="footer">教育目的の模擬アプリです。診療判断には使用しないでください。<br><span class="version">Version 2.0.0-waveform</span></div>
+</div>
+<script>
+const Q = [
+{id:1,cat:'頻拍',pattern:'af',stem:'動悸を訴える患者。以下のリズムで最も考えられるものはどれか。',choices:['心房細動','心房粗動（2:1伝導）','洞性頻脈','多源性心房頻拍'],ans:0,exp:'RR間隔が不規則で、一定したP波を認めないため心房細動が最も典型的です。'},
+{id:2,cat:'頻拍',pattern:'flutter21',stem:'規則正しい約150/分の頻拍。下壁誘導で鋸歯状波を認める。最も考えられる診断はどれか。',choices:['心房粗動 2:1房室伝導','AVNRT','心房細動','洞性頻脈'],ans:0,exp:'心房粗動が約300/分、2:1伝導で心室拍数約150/分となる典型像です。'},
+{id:3,cat:'頻拍',pattern:'avnrt',stem:'突然発症・突然停止する規則正しい狭QRS頻拍。P波はQRS内に埋没している。最も考えられるものはどれか。',choices:['房室結節リエントリー性頻拍（AVNRT）','心房細動','心室頻拍','洞性頻脈'],ans:0,exp:'規則正しい狭QRS頻拍でP波が不明瞭な場合、典型的AVNRTを考えます。'},
+{id:4,cat:'頻拍',pattern:'avrt',stem:'若年者の規則正しい狭QRS頻拍。停止後の洞調律では短いPRとデルタ波を認める。頻拍の機序として最も考えられるものはどれか。',choices:['房室回帰性頻拍（AVRT）','心房頻拍','房室接合部調律','心室頻拍'],ans:0,exp:'WPW症候群に伴う副伝導路を利用したAVRTが典型です。'},
+{id:5,cat:'頻拍',pattern:'vtmono',stem:'器質的心疾患のある患者に出現した規則正しい幅広QRS頻拍。房室解離を認める。最も考えられる診断はどれか。',choices:['単形性心室頻拍','変行伝導を伴うSVT','心房粗動','洞性頻脈'],ans:0,exp:'幅広QRS頻拍に房室解離を伴う所見は心室頻拍を強く支持します。'},
+{id:6,cat:'頻拍',pattern:'torsades',stem:'QT延長を背景にQRS軸が基線を中心にねじれるように変化する頻拍を認める。診断はどれか。',choices:['Torsades de pointes','単形性VT','心室細動','心房粗動'],ans:0,exp:'QT延長を背景に多形性VTが“ねじれる”ように見えるのがTorsades de pointesです。'},
+{id:7,cat:'徐脈・伝導',pattern:'avb1',stem:'各P波の後にQRSが続くがPR時間が一様に延長している。診断はどれか。',choices:['1度房室ブロック','Mobitz I型','Mobitz II型','完全房室ブロック'],ans:0,exp:'すべてのP波が伝導し、PRのみ延長しているため1度房室ブロックです。'},
+{id:8,cat:'徐脈・伝導',pattern:'wenckebach',stem:'PR間隔が徐々に延長した後にQRSが脱落する。診断はどれか。',choices:['Mobitz I型（Wenckebach）','Mobitz II型','完全房室ブロック','洞房ブロック'],ans:0,exp:'PR漸増の後に脱落するのがWenckebach型です。'},
+{id:9,cat:'徐脈・伝導',pattern:'mobitz2',stem:'PR間隔は一定だが、ときどきP波の後のQRSが突然脱落する。診断はどれか。',choices:['Mobitz II型','Mobitz I型','1度房室ブロック','洞性不整脈'],ans:0,exp:'PR固定のまま突然伝導が脱落する所見はMobitz II型です。'},
+{id:10,cat:'徐脈・伝導',pattern:'chb',stem:'P波とQRSが互いに独立した周期で出現し、心室レートは遅い。診断はどれか。',choices:['完全房室ブロック','2:1房室ブロック','洞停止','心房細動'],ans:0,exp:'房室解離を伴う独立した心房・心室活動は完全房室ブロックの典型です。'},
+{id:11,cat:'脚ブロック',pattern:'rbbb',stem:'V1でrsR\'、I・V6で幅広い終末S波を認める。最も考えられる所見はどれか。',choices:['完全右脚ブロック','完全左脚ブロック','左脚前枝ブロック','WPW症候群'],ans:0,exp:'V1のrsR\'とI/V6の幅広いS波は右脚ブロックの典型です。'},
+{id:12,cat:'脚ブロック',pattern:'lbbb',stem:'I、aVL、V5–V6で幅広くノッチを伴うR波、V1で深いS波。QRS幅は延長。診断はどれか。',choices:['完全左脚ブロック','完全右脚ブロック','左室肥大のみ','心室期外収縮'],ans:0,exp:'側壁誘導の幅広いR波とV1の深いS波は左脚ブロックを示します。'},
+{id:13,cat:'脚ブロック',pattern:'lafb',stem:'著明な左軸偏位があり、I/aVLでqR、II/III/aVFでrS。QRS幅は軽度。診断はどれか。',choices:['左脚前枝ブロック','左脚後枝ブロック','右脚ブロック','右室肥大'],ans:0,exp:'左軸偏位とI/aVL qR、下壁誘導rSは左脚前枝ブロックに合致します。'},
+{id:14,cat:'副伝導路',pattern:'wpw',stem:'PR短縮、QRS立ち上がりのデルタ波、QRS幅延長を認める。診断はどれか。',choices:['WPW症候群','LBBB','Brugada症候群','早期再分極'],ans:0,exp:'短PR＋デルタ波＋幅広QRSは心室早期興奮、すなわちWPWパターンです。'},
+{id:15,cat:'Brugada',pattern:'brugada1',stem:'V1–V2でcoved型ST上昇と陰性T波を認める。最も考えられる心電図所見はどれか。',choices:['Brugada type 1 pattern','右脚ブロックのみ','前壁STEMI','早期再分極'],ans:0,exp:'右側胸部誘導のcoved型ST上昇と陰性T波はBrugada type 1の典型所見です。'},
+{id:16,cat:'虚血・梗塞',pattern:'stemi_inf',stem:'胸痛患者。II、III、aVFでST上昇、I、aVLで鏡像性ST低下を認める。責任領域はどれか。',choices:['下壁','前壁','側壁','後壁のみ'],ans:0,exp:'II、III、aVFのST上昇は下壁梗塞を示し、I/aVLのreciprocal changeを伴うことがあります。'},
+{id:17,cat:'虚血・梗塞',pattern:'stemi_ant',stem:'V1–V4を中心に連続するST上昇を認める。最も考えられる梗塞領域はどれか。',choices:['前壁中隔','下壁','高位側壁','後壁'],ans:0,exp:'V1–V4のST上昇は前壁中隔領域の急性心筋梗塞を示唆します。'},
+{id:18,cat:'虚血・梗塞',pattern:'stemi_lat',stem:'I、aVL、V5–V6でST上昇を認める。責任領域はどれか。',choices:['側壁','下壁','中隔','右室'],ans:0,exp:'I、aVL、V5–V6は側壁を反映します。'},
+{id:19,cat:'虚血・梗塞',pattern:'posterior',stem:'V1–V3で水平型ST低下と高いR波を認める。最も疑うべき病態はどれか。',choices:['後壁梗塞','前壁虚血','右脚ブロック','左室肥大'],ans:0,exp:'前胸部誘導でのST低下＋高いR波は後壁ST上昇の鏡像所見として重要です。'},
+{id:20,cat:'虚血・梗塞',pattern:'rvmi',stem:'下壁ST上昇に加え、右側胸部誘導相当でST上昇を認める。合併として最も考えるものはどれか。',choices:['右室梗塞','前壁梗塞','心膜炎','左脚ブロック'],ans:0,exp:'下壁梗塞に右側胸部誘導のST上昇を伴えば右室梗塞を考えます。'},
+{id:21,cat:'虚血・梗塞',pattern:'wellens',stem:'胸痛消失時、V2–V4に深い対称性陰性T波を認める。重要な病態として最も適切なのはどれか。',choices:['近位LAD高度狭窄を示唆するWellens pattern','急性心膜炎','高K血症','Brugada症候群'],ans:0,exp:'前胸部誘導の特徴的なT波変化はWellens patternとして近位LAD病変を示唆します。'},
+{id:22,cat:'虚血・梗塞',pattern:'dewinter',stem:'V2–V5でJ点から上向きのST低下と高く対称的なT波、aVRで軽度ST上昇。最も考えるものはどれか。',choices:['de Winter pattern（LAD閉塞を示唆）','高K血症','早期再分極','肺塞栓'],ans:0,exp:'前胸部誘導の上向きST低下＋高いT波はde Winter patternとして急性LAD閉塞の等価所見とされます。'},
+{id:23,cat:'ST-T変化',pattern:'pericarditis',stem:'多くの誘導でびまん性ST上昇とPR低下を認める。最も考えられる診断はどれか。',choices:['急性心膜炎','前壁STEMI','早期再分極','高K血症'],ans:0,exp:'局在性ではなくびまん性ST上昇とPR低下は急性心膜炎に典型的です。'},
+{id:24,cat:'ST-T変化',pattern:'earlyrep',stem:'若年者。V2–V5でJ点上昇とnotchingを伴う上向きST上昇。症状なし。最も考えられるものはどれか。',choices:['早期再分極','前壁STEMI','Brugada type 1','高K血症'],ans:0,exp:'無症候の若年者でJ点notchingを伴う上向きST上昇は早期再分極に合致します。'},
+{id:25,cat:'電解質',pattern:'hyperk',stem:'腎機能障害患者。全体に尖鋭化した高いT波、PR延長、QRS拡大傾向。最も考えるものはどれか。',choices:['高カリウム血症','低カリウム血症','高カルシウム血症','低マグネシウム血症'],ans:0,exp:'テント状T波からPR延長、QRS拡大へ進行する変化は高K血症に典型的です。'},
+{id:26,cat:'電解質',pattern:'hypok',stem:'T波平低化、ST低下、明瞭なU波を認める。最も考えられる電解質異常はどれか。',choices:['低カリウム血症','高カリウム血症','高カルシウム血症','高ナトリウム血症'],ans:0,exp:'T波平低化とU波増高は低K血症の代表的所見です。'},
+{id:27,cat:'QT',pattern:'longqt',stem:'QTcが著明に延長している。最も注意すべき致死性不整脈はどれか。',choices:['Torsades de pointes','AVNRT','心房粗動','洞停止'],ans:0,exp:'QT延長はTorsades de pointesの重要な基盤です。'},
+{id:28,cat:'QT',pattern:'shortqt',stem:'QT間隔が明らかに短縮している。最も考えられる病態として適切なのはどれか。',choices:['Short QT pattern','Long QT syndrome','高K血症のみ','完全房室ブロック'],ans:0,exp:'補正QTが著明に短い所見はShort QT patternを示します。'},
+{id:29,cat:'肥大・負荷',pattern:'lvh',stem:'V1で深いS波、V5–V6で高いR波とstrain型ST-T変化。最も考えられる所見はどれか。',choices:['左室肥大','右室肥大','左脚前枝ブロック','WPW症候群'],ans:0,exp:'高電位差に側壁誘導のstrain patternを伴えば左室肥大を支持します。'},
+{id:30,cat:'肥大・負荷',pattern:'rvh',stem:'右軸偏位、V1で高いR波、右側胸部誘導でstrainを認める。最も考えられる所見はどれか。',choices:['右室肥大','左室肥大','左脚ブロック','前壁梗塞'],ans:0,exp:'右軸偏位＋V1高Rなどは右室肥大を示唆します。'},
+{id:31,cat:'肺血栓塞栓',pattern:'pe',stem:'突然の呼吸困難。洞性頻脈に加えI誘導のS波、III誘導のQ波と陰性T波を認める。古典的所見はどれか。',choices:['S1Q3T3','Wellens sign','de Winter pattern','左室strain'],ans:0,exp:'S1Q3T3は肺血栓塞栓症で知られる古典的右心負荷所見です。感度は高くありません。'},
+{id:32,cat:'期外収縮',pattern:'pvc',stem:'予定より早く出現する幅広いQRSがあり、先行P波を認めず、その後に代償性休止を伴う。診断はどれか。',choices:['心室期外収縮','心房期外収縮','接合部期外収縮','洞性不整脈'],ans:0,exp:'先行P波を伴わない幅広い早期QRSと代償性休止はPVCに典型的です。'},
+{id:33,cat:'期外収縮',pattern:'pac',stem:'予定より早い異常形P波に続いて狭QRSが出現する。最も考えられるものはどれか。',choices:['心房期外収縮','心室期外収縮','房室ブロック','心室頻拍'],ans:0,exp:'早期異所性P波に通常狭QRSが続くため心房期外収縮です。'},
+{id:34,cat:'接合部',pattern:'junctional',stem:'規則正しい徐脈でP波がQRS直前に見えないか、QRS後に逆行性P波を認める。最も考えられる調律はどれか。',choices:['房室接合部調律','洞性徐脈','完全房室ブロック','心房細動'],ans:0,exp:'P波欠如または逆行性P波を伴う規則正しい狭QRS徐脈は接合部調律を示唆します。'},
+{id:35,cat:'洞機能',pattern:'sinuspause',stem:'基本は洞調律だが、突然P-QRS-Tが消失する長い休止を認める。最も考えられる所見はどれか。',choices:['洞停止','Mobitz II型','心房細動','心室停止のみ'],ans:0,exp:'P波自体が消失する休止は洞停止を示します。'},
+{id:36,cat:'洞機能',pattern:'sabrady',stem:'P波は規則正しく各QRSに先行するが、心拍数は約45/分。診断はどれか。',choices:['洞性徐脈','接合部調律','完全房室ブロック','心房粗動'],ans:0,exp:'正常洞性P波が各QRSに先行し、単にレートが遅いのが洞性徐脈です。'},
+{id:37,cat:'ペースメーカ',pattern:'pacingv',stem:'各QRS直前にペーシングスパイクを認め、その後に幅広いQRSが続く。最も適切な説明はどれか。',choices:['心室ペーシング','心房ペーシングのみ','センシング不全','ペーシング不全'],ans:0,exp:'スパイク直後に幅広QRSが出ていれば心室captureを伴う心室ペーシングです。'},
+{id:38,cat:'ペースメーカ',pattern:'failurecapture',stem:'ペーシングスパイクは出現しているが、その直後にQRSが出現しない箇所がある。異常はどれか。',choices:['Capture failure','Undersensing','Oversensing','正常作動'],ans:0,exp:'スパイクがあるのに脱分極が起きないのはcapture failureです。'},
+{id:39,cat:'ペースメーカ',pattern:'undersense',stem:'自己QRSの直後にも不適切なペーシングスパイクが出現している。最も考えられる異常はどれか。',choices:['Undersensing','Oversensing','Capture failure','正常DDD作動'],ans:0,exp:'自己心拍を認識できず不適切なタイミングで刺激するのはundersensingです。'},
+{id:40,cat:'QRS',pattern:'preexcitedaf',stem:'非常に不規則で幅広いQRS頻拍。QRS形態とRR間隔が大きく変化し、既知のWPWがある。最も考えられるものはどれか。',choices:['WPWに伴うpre-excited AF','単形性VT','AVNRT','心房粗動2:1'],ans:0,exp:'WPW患者の不規則な幅広QRS頻拍ではpre-excited AFを強く疑います。'},
+{id:41,cat:'鑑別',pattern:'svtaberr',stem:'規則正しい幅広QRS頻拍。既存の右脚ブロック波形とQRS形態が一致し、房室解離を認めない。候補として最も適切なのはどれか。',choices:['変行伝導を伴う上室頻拍','必ず心室頻拍','心房細動','洞停止'],ans:0,exp:'幅広QRS頻拍はまずVTを考えますが、既存脚ブロックと同形でAV解離がない場合はSVT with aberrancyも鑑別になります。'},
+{id:42,cat:'虚血・梗塞',pattern:'qwave_ant',stem:'V1–V4に病的Q波とR波減高を認め、急性ST上昇は目立たない。最も考えられる既往はどれか。',choices:['陳旧性前壁心筋梗塞','陳旧性下壁梗塞','右室肥大','早期再分極'],ans:0,exp:'前胸部誘導の病的Q波とR波減高は陳旧性前壁梗塞を示唆します。'},
+{id:43,cat:'虚血・梗塞',pattern:'qwave_inf',stem:'II、III、aVFに病的Q波を認める。最も考えられる既往はどれか。',choices:['陳旧性下壁心筋梗塞','陳旧性前壁心筋梗塞','LBBB','右室肥大'],ans:0,exp:'下壁誘導の病的Q波は陳旧性下壁梗塞を示唆します。'},
+{id:44,cat:'心房負荷',pattern:'lae',stem:'II誘導で幅広く二峰性のP波、V1でP終末陰性成分の増大を認める。所見はどれか。',choices:['左房負荷','右房負荷','左室肥大','右室肥大'],ans:0,exp:'P mitraleやV1のP terminal force増大は左房負荷を支持します。'},
+{id:45,cat:'心房負荷',pattern:'rae',stem:'II、III、aVFで尖った高いP波を認める。所見はどれか。',choices:['右房負荷','左房負荷','高K血症','房室ブロック'],ans:0,exp:'下壁誘導で高く尖ったP波はP pulmonale、右房負荷を示唆します。'},
+{id:46,cat:'頻拍',pattern:'mat',stem:'100/分を超える不規則な狭QRS頻拍で、少なくとも3種類以上のP波形と変動するPRを認める。診断はどれか。',choices:['多源性心房頻拍（MAT）','心房細動','心房粗動','AVNRT'],ans:0,exp:'3種類以上のP波形＋不規則RR＋変動PRはMATの定義的所見です。'},
+{id:47,cat:'頻拍',pattern:'at',stem:'規則正しい狭QRS頻拍で、各QRSに先行して洞性P波と異なる形のP波を認める。診断はどれか。',choices:['心房頻拍','AVNRT','心房細動','心室頻拍'],ans:0,exp:'異所性P波が規則正しくQRSに先行するため心房頻拍を考えます。'},
+{id:48,cat:'ST-T変化',pattern:'digoxin',stem:'下方にえぐれるようなscooped ST低下を広範に認める。薬剤による変化として最も典型的なのはどれか。',choices:['ジギタリス効果','アミオダロン効果','β遮断薬効果','アデノシン効果'],ans:0,exp:'scooped ST depressionは古典的なdigitalis effectです。'},
+{id:49,cat:'低体温',pattern:'osborn',stem:'低体温患者。QRS終末からST接合部に陽性のノッチ状波を認める。名称はどれか。',choices:['Osborn（J）波','デルタ波','U波','epsilon波'],ans:0,exp:'低体温でみられるJ点の特徴的な陽性波はOsborn波（J波）です。'},
+{id:50,cat:'右室疾患',pattern:'epsilon',stem:'V1–V3のQRS終末直後に小さな陽性波を認め、右室由来心室性不整脈を伴う。所見名はどれか。',choices:['Epsilon波','デルタ波','Osborn波','U波'],ans:0,exp:'右室心筋症で知られるV1–V3のQRS終末後の小波がepsilon waveです。'}
+];
+
+let state={mode:null,qs:[],idx:0,ans:{},flags:{},start:0,timer:null,submitted:false};
+const $=id=>document.getElementById(id);
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startExam(mode){
+  let pool=[...Q]; if(mode==='weak'){const weak=JSON.parse(localStorage.getItem('ecgWeak')||'[]'); pool=Q.filter(q=>weak.includes(q.id)); if(!pool.length){alert('まだ苦手問題がありません。まず練習または模試を実施してください。');return;}}
+  state={mode,qs:mode==='mock'?shuffle(pool).slice(0,50):mode==='quick'?shuffle(pool).slice(0,10):shuffle(pool),idx:0,ans:{},flags:{},start:Date.now(),timer:null,submitted:false};
+  $('home').classList.add('hidden');$('result').classList.add('hidden');$('stats').classList.add('hidden');$('exam').classList.remove('hidden');
+  if(mode==='mock'){ $('timer').classList.remove('hidden'); tick(); state.timer=setInterval(tick,1000);} else $('timer').classList.add('hidden');
+  renderQ();
+}
+function tick(){let left=5400-Math.floor((Date.now()-state.start)/1000);if(left<=0){left=0;finishExam();} $('timer').textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0')}
+function renderQ(){const q=state.qs[state.idx];$('qnum').textContent=`問題 ${state.idx+1}`;$('cat').textContent=q.cat;$('progress').textContent=`${state.idx+1} / ${state.qs.length}`;$('stem').textContent=q.stem;$('ecg').innerHTML=renderECG(q.pattern);
+ const C=$('choices');C.innerHTML='';q.choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice'+(state.ans[q.id]===i?' selected':'');b.innerHTML=`<span class="letter">${'ABCD'[i]}</span><span>${c}</span>`;b.onclick=()=>selectAns(i);C.appendChild(b)});
+ const ex=$('explain'); if(state.mode!=='mock' && state.ans[q.id]!==undefined){showExplanation();} else {ex.classList.add('hidden');ex.innerHTML='';}
+ $('flagbtn').classList.toggle('on',!!state.flags[q.id]);$('flagbtn').textContent=state.flags[q.id]?'★ フラグ済':'☆ フラグ';$('nextbtn').textContent=state.idx===state.qs.length-1?'採点する':'次へ';renderPager();window.scrollTo({top:0,behavior:'smooth'});
+}
+function selectAns(i){const q=state.qs[state.idx];state.ans[q.id]=i;renderQ();}
+function showExplanation(){const q=state.qs[state.idx],sel=state.ans[q.id];const buttons=[...$('choices').children];buttons.forEach((b,i)=>{b.classList.remove('correct','wrong'); if(i===q.ans)b.classList.add('correct'); if(i===sel&&i!==q.ans)b.classList.add('wrong')});$('explain').classList.remove('hidden');$('explain').innerHTML=`<b>${sel===q.ans?'正解':'不正解'}</b><br>${q.exp}`}
+function toggleFlag(){const q=state.qs[state.idx];state.flags[q.id]=!state.flags[q.id];renderQ()}
+function prevQ(){if(state.idx>0){state.idx--;renderQ()}}
+function nextQ(){if(state.idx===state.qs.length-1){if(state.mode==='mock'&&Object.keys(state.ans).length<state.qs.length&&!confirm(`未回答が${state.qs.length-Object.keys(state.ans).length}問あります。採点しますか？`))return;finishExam()}else{state.idx++;renderQ()}}
+function renderPager(){const p=$('pager');p.innerHTML='';state.qs.forEach((q,i)=>{const b=document.createElement('button');b.className='pg'+(state.ans[q.id]!==undefined?' answered':'')+(i===state.idx?' current':'')+(state.flags[q.id]?' flagged':'');b.textContent=i+1;b.onclick=()=>{state.idx=i;renderQ()};p.appendChild(b)})}
+function finishExam(){if(state.submitted)return;state.submitted=true;if(state.timer)clearInterval(state.timer);$('timer').classList.add('hidden');let correct=0;const wrong=[];state.qs.forEach(q=>{if(state.ans[q.id]===q.ans)correct++;else wrong.push(q.id)});let weak=new Set(JSON.parse(localStorage.getItem('ecgWeak')||'[]'));state.qs.forEach(q=>{if(state.ans[q.id]===q.ans)weak.delete(q.id);else weak.add(q.id)});localStorage.setItem('ecgWeak',JSON.stringify([...weak]));const score=Math.round(correct/state.qs.length*100);const hist=JSON.parse(localStorage.getItem('ecgHist')||'[]');hist.unshift({date:new Date().toLocaleString('ja-JP'),mode:state.mode,correct,total:state.qs.length,score});localStorage.setItem('ecgHist',JSON.stringify(hist.slice(0,20)));const best=Math.max(score,Number(localStorage.getItem('ecgBest')||0));localStorage.setItem('ecgBest',best);
+ $('exam').classList.add('hidden');const r=$('result');r.classList.remove('hidden');r.innerHTML=`<div class="card"><div class="small">結果</div><div class="resultbig">${score}%</div><div class="resultgrid"><div class="stat"><b>${correct}</b>正解</div><div class="stat"><b>${state.qs.length-correct}</b>誤答</div><div class="stat"><b>${best}%</b>最高</div></div><div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><button class="primary" onclick="reviewWrong()">誤答を復習</button><button class="secondary" onclick="goHome()">ホームへ</button></div></div><div class="card"><b>今回の誤答</b>${wrong.length?wrong.map(id=>{const q=Q.find(x=>x.id===id);return `<div class="reviewitem"><b>Q${id} ${q.cat}</b><div>${q.stem}</div><div class="small">正解：${q.choices[q.ans]}</div></div>`}).join(''):'<div class="sub">全問正解です。</div>'}</div>`;window.scrollTo(0,0)}
+function reviewWrong(){const weak=JSON.parse(localStorage.getItem('ecgWeak')||'[]'); if(!weak.length){alert('苦手問題はありません');return} startExam('weak')}
+function goHome(){$('exam').classList.add('hidden');$('result').classList.add('hidden');$('stats').classList.add('hidden');$('home').classList.remove('hidden');}
+function showStats(){const h=JSON.parse(localStorage.getItem('ecgHist')||'[]'),best=localStorage.getItem('ecgBest')||0,weak=JSON.parse(localStorage.getItem('ecgWeak')||'[]');$('home').classList.add('hidden');const s=$('stats');s.classList.remove('hidden');s.innerHTML=`<div class="card"><div class="resultgrid"><div class="stat"><b>${best}%</b>最高得点</div><div class="stat"><b>${h.length}</b>受験回数</div><div class="stat"><b>${weak.length}</b>苦手問題</div></div><div style="margin-top:14px"><button class="secondary" onclick="goHome()">ホームへ</button></div></div><div class="card"><b>最近の履歴</b>${h.length?h.map(x=>`<div class="reviewitem"><b>${x.score}% (${x.correct}/${x.total})</b><div class="small">${x.date} / ${x.mode}</div></div>`).join(''):'<div class="sub">まだ履歴がありません。</div>'}</div>`}
+
+function renderECG(pattern){
+ const leads=['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6']; const W=900,H=520,rowH=42,left=38; let svg=`<svg class="ecgsvg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+ svg+=`<defs><pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="#f7c7cd" stroke-width="0.5"/></pattern><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="url(#smallGrid)"/><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e99aa5" stroke-width="0.8"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/>`;
+ leads.forEach((lead,i)=>{const y=26+i*rowH;svg+=`<text x="6" y="${y+4}" font-size="12" font-family="sans-serif" fill="#334155">${lead}</text>`;svg+=`<path d="${wavePath(pattern,lead,left,y,W-left-10)}" fill="none" stroke="#111827" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>`});
+ svg+=`<path d="M55 505 v-10 h10 v10 h10" fill="none" stroke="#111827" stroke-width="1.5"/><text x="82" y="507" font-size="10" fill="#475569">1 mV</text></svg>`;return svg;
+}
+function wavePath(pattern,lead,x0,base,w){const pts=[];const rate=rateFor(pattern),rr=Math.max(34,12000/rate);let x=x0;const n=Math.ceil(w/rr)+2;let seed=(pattern+lead).split('').reduce((a,c)=>a+c.charCodeAt(0),0);for(let b=0;b<n;b++){let jitter=0;if(['af','mat','preexcitedaf'].includes(pattern))jitter=((Math.sin(seed+b*2.17)+1)/2-.5)*rr*.45;let cx=x0+b*rr+jitter;if(cx>w+x0)break;appendBeat(pts,pattern,lead,cx,base,rr,b,seed)} if(['sinuspause'].includes(pattern)){return pathWithPause(pts,x0,base,w,rr)} return toPath(pts,x0,base,w)}
+function rateFor(p){if(['af'].includes(p))return 105;if(['flutter21','avnrt','avrt','at'].includes(p))return 150;if(['vtmono','svtaberr'].includes(p))return 170;if(['torsades','preexcitedaf'].includes(p))return 210;if(['chb','junctional','sabrady'].includes(p))return 45;if(['mat'].includes(p))return 125;if(['pacingv','failurecapture','undersense'].includes(p))return 70;return 72}
+function appendBeat(P,p,l,c,b,rr,k,seed){const amp=leadPolarity(l),st=stShift(p,l),t=tMorph(p,l),qrs=qrsMorph(p,l);let pw=3,pa=2*amp;if(['af'].includes(p)){for(let j=-18;j<-5;j+=5)P.push([c+j,b+Math.sin((j+seed)*.7)*1.8]);}else if(['flutter21'].includes(p)){for(let j=-rr*.9;j<0;j+=rr/2)P.push([c+j,b+((j%(rr/2))/(rr/2)<.5?-2:2)]);}else if(!['junctional','avnrt','vtmono','torsades','preexcitedaf','pvc'].includes(p)){if(p==='lae'){P.push([c-26,b],[c-22,b-2.5*amp],[c-18,b],[c-14,b-2.5*amp],[c-10,b]);}else if(p==='rae'){P.push([c-23,b],[c-19,b-5*amp],[c-15,b]);}else if(p==='mat'){let s=((k%3)-1);P.push([c-24,b],[c-20,b-(2+s)*amp],[c-16,b]);}else P.push([c-22,b],[c-18,b-pa],[c-14,b]);}
+ let pre=0;if(p==='wpw'||p==='avrt'){P.push([c-9,b],[c-6,b-qrs*amp*.25]);pre=4}
+ if(p==='pvc'&&k===2){drawWide(P,c,b,amp*1.2,1.35);return}
+ if(p==='pac'&&k===2){P.push([c-31,b],[c-27,b-3*amp],[c-23,b]);}
+ if(p==='wenckebach'&&k%4===3)return;if(p==='mobitz2'&&k%4===2)return;
+ if(p==='chb'){let vc=c+((k%2)?rr*.25:0);drawQRS(P,vc,b,amp,qrs,p,l);drawT(P,vc,b,amp,t,st,p,l);return}
+ if(p==='torsades'){let scale=.8+Math.sin(k*.9)*.65;drawWide(P,c,b,amp*scale,1.4);return}
+ if(['vtmono','svtaberr','preexcitedaf'].includes(p)){let sc=p==='preexcitedaf'?(0.75+(k%3)*.2):1;drawWide(P,c,b,amp*sc,1.25);return}
+ if(p==='pacingv'||p==='failurecapture'||p==='undersense'){P.push([c-5,b+7],[c-5,b-12],[c-4.3,b+7]);if(p==='failurecapture'&&k===2)return;if(p==='undersense'&&k===3)P.push([c+6,b+7],[c+6,b-11],[c+6.7,b+7]);drawWide(P,c,b,amp,1.0);return}
+ drawQRS(P,c+pre,b,amp,qrs,p,l);drawT(P,c+pre,b,amp,t,st,p,l);
+ if(p==='hypok')P.push([c+26,b],[c+31,b-1.8*amp],[c+35,b]); if(p==='epsilon'&&['V1','V2','V3'].includes(l))P.push([c+9,b],[c+12,b-2*amp],[c+14,b]);}
+function drawQRS(P,c,b,a,q,p,l){if(p==='rbbb'&&l==='V1'){P.push([c-5,b],[c-3,b-5],[c,b+4],[c+3,b-8],[c+6,b]);return}if(p==='lbbb'&&['I','aVL','V5','V6'].includes(l)){P.push([c-6,b],[c-3,b-6*a],[c,b-8*a],[c+3,b-6*a],[c+7,b]);return}if(p==='brugada1'&&['V1','V2'].includes(l)){P.push([c-5,b],[c-2,b-7],[c+1,b+4],[c+4,b-5],[c+7,b]);return}if(p==='qwave_ant'&&['V1','V2','V3','V4'].includes(l)||p==='qwave_inf'&&['II','III','aVF'].includes(l)){P.push([c-5,b],[c-3,b+6],[c,b-2*a],[c+3,b+2],[c+6,b]);return}P.push([c-5,b],[c-3,b+2*a],[c-1,b-7*a*q],[c+1,b+4*a],[c+3,b-2*a],[c+6,b]);}
+function drawWide(P,c,b,a,s){P.push([c-8,b],[c-5,b-7*a*s],[c,b+8*a*s],[c+6,b-5*a*s],[c+11,b],[c+18,b-3*a],[c+27,b]);}
+function drawT(P,c,b,a,t,st,p,l){let y=b-st; if(p==='digoxin'){P.push([c+7,b],[c+12,b+3],[c+18,b+4],[c+25,b+1],[c+31,b]);return} if(p==='osborn'){P.push([c+7,b],[c+10,b-4*a],[c+13,b],[c+18,y],[c+24,y-3*a*t],[c+31,b]);return}P.push([c+7,b],[c+11,y],[c+18,y-4*a*t],[c+25,y],[c+31,b]);}
+function leadPolarity(l){return ['aVR'].includes(l)?-1:['V1'].includes(l)?-.65:['III'].includes(l)?.75:1}
+function qrsMorph(p,l){if(p==='lvh'&&['V5','V6'].includes(l))return 1.5;if(p==='lvh'&&l==='V1')return 1.45;if(p==='rvh'&&l==='V1')return -1.25;return 1}
+function tMorph(p,l){if(p==='hyperk')return 2;if(p==='hypok')return .35;if(p==='wellens'&&['V2','V3','V4'].includes(l))return -1.6;if(p==='brugada1'&&['V1','V2'].includes(l))return -1;if(p==='pe'&&['III','V1','V2','V3'].includes(l))return -1;if(p==='lvh'&&['I','aVL','V5','V6'].includes(l))return -1;return 1}
+function stShift(p,l){const up=(arr,v=4)=>arr.includes(l)?v:0,down=(arr,v=3)=>arr.includes(l)?-v:0; if(p==='stemi_inf')return up(['II','III','aVF'],5)+down(['I','aVL'],3);if(p==='stemi_ant')return up(['V1','V2','V3','V4'],5);if(p==='stemi_lat')return up(['I','aVL','V5','V6'],5);if(p==='posterior')return down(['V1','V2','V3'],4);if(p==='rvmi')return up(['II','III','aVF','V1'],4);if(p==='dewinter')return down(['V2','V3','V4','V5'],3)+up(['aVR'],2);if(p==='pericarditis')return ['aVR'].includes(l)?-2:3;if(p==='earlyrep')return up(['V2','V3','V4','V5'],3);if(p==='brugada1')return up(['V1','V2'],5);if(p==='digoxin')return -2;if(p==='lvh'&&['I','aVL','V5','V6'].includes(l))return -2;return 0}
+function toPath(P,x,b,w){P.sort((a,b)=>a[0]-b[0]);let d=`M ${x} ${b}`;for(const [px,py] of P){if(px>=x&&px<=x+w)d+=` L ${px.toFixed(1)} ${py.toFixed(1)}`}d+=` L ${x+w} ${b}`;return d}
+function pathWithPause(P,x,b,w,rr){const lo=x+w*.42,hi=x+w*.64;const F=P.filter(([px])=>px<lo||px>hi);return toPath(F,x,b,w)}
+
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body></html>
